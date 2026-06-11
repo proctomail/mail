@@ -40,8 +40,15 @@ body{
     margin:auto;
 }
 
+/* PROFESSIONELLER STICKY HEADER */
 header{
-    padding:24px 0;
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(7, 8, 16, 0.8); /* Dein --bg Farbton mit Transparenz */
+    backdrop-filter: blur(12px);    /* Schicker Milchglas-Effekt beim Scrollen */
+    border-bottom: 1px solid var(--border);
 }
 
 /* RESPONSIVE NAV-BAR */
@@ -106,7 +113,7 @@ header{
 .success-banner {
     display: none;
     background: rgba(139, 49, 57, 0.15);
-    border: 1px solid #ff5c77; /* Hier die direkte CSS-Farbe für Rot */
+    border: 1px solid #ff5c77; 
     color: #faf7f9;
     padding: 16px;
     border-radius: 14px;
@@ -118,9 +125,10 @@ header{
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
 .hero{
-    min-height:85vh;
+    min-height:80vh;
     display:flex;
     align-items:center;
+    padding: 40px 0; /* Verhindert, dass der Inhalt am Header klebt */
 }
 
 .hero-grid{
@@ -306,24 +314,28 @@ footer{
     color:var(--muted);
 }
 
-/* SMARTPHONE & TABLET ANPASSUNGEN */
+/* OPTIMIERTES SMARTPHONE & TABLET LAYOUT */
 @media(max-width:900px){
+    header {
+        padding: 12px 0;
+    }
+
     .nav {
-        flex-direction: column;
-        text-align: center;
-        padding-bottom: 10px;
+        display: grid;
+        grid-template-columns: 1fr auto; /* Logo links, Button rechts */
+        gap: 12px;
     }
     
     .nav-links {
-        order: 3; /* Setzt die Links nach ganz unten im Header */
-        width: 100%;
+        grid-column: span 2; /* Links breiten sich über die ganze Zeile darunter aus */
         justify-content: center;
-        gap: 20px;
-        margin-top: 10px;
+        gap: 16px;
+        margin-top: 4px;
     }
 
     .btn-signup-header {
-        order: 2;
+        padding: 10px 16px; /* Etwas kompakter auf Handys */
+        font-size: 0.9rem;
     }
 
     .hero-grid{
@@ -346,7 +358,7 @@ footer{
     }
 
     .hero h1{
-        font-size:2.8rem;
+        font-size:2.5rem;
     }
 }
 </style>
