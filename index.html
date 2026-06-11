@@ -9,7 +9,12 @@
 
 <style>
 :root{
-    --bg:#070810;
+    /* Diese Variable wird vom JavaScript zwischen 0 (oben) und 1 (unten) verändert */
+    --scroll-pos: 0;
+    
+    /* Dynamischer Hintergrund: Ändert leicht den Farbton (Hue) und die Helligkeit beim Scrollen */
+    --dynamic-bg: hsl(calc(233 + (var(--scroll-pos) * 30)), 40%, calc(6% + (var(--scroll-pos) * 2%)));
+    
     --card:#121524;
     --card2:#171b2d;
     --accent:#ff5c77d5;
@@ -23,6 +28,8 @@
 /* FLÜSSIGES SCROLLEN AKTIVIEREN */
 html {
     scroll-behavior: smooth;
+    /* Damit Anker-Links (z.B. #features) nicht unter dem festen Header verschwinden */
+    scroll-padding-top: 80px; 
 }
 
 *{
@@ -33,11 +40,14 @@ html {
 
 body{
     font-family:Inter,sans-serif;
+    /* Der Hintergrund reagiert nun auf die Scroll-Position (--scroll-pos) */
     background:
-        radial-gradient(circle at top right,#2a1b57 0%,transparent 35%),
-        radial-gradient(circle at bottom left,#171d4d 0%,transparent 40%),
-        var(--bg);
+        radial-gradient(circle at calc(100% - (var(--scroll-pos) * 20%)) calc(0% + (var(--scroll-pos) * 40%)), #2a1b57 0%, transparent 35%),
+        radial-gradient(circle at calc(0% + (var(--scroll-pos) * 20%)) calc(100% - (var(--scroll-pos) * 40%)), #171d4d 0%, transparent 40%),
+        var(--dynamic-bg);
     color:var(--text);
+    /* Sorgt für weiche Farbübergänge beim Scrollen */
+    transition: background-color 0.1s ease-out; 
 }
 
 .container{
@@ -45,13 +55,15 @@ body{
     margin:auto;
 }
 
-/* PROFESSIONELLER STICKY HEADER */
+/* 1. HEADER: NUN FIXED DAMIT ER IMMER OBEN BLEIBT */
 header{
     padding: 16px 0;
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 1000;
-    background: rgba(7, 8, 16, 0.8);
+    background: rgba(7, 8, 16, 0.7);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
 }
@@ -132,7 +144,6 @@ header{
 /* BASIS-STYLING FÜR SEKTIONEN */
 .section, .hero {
     padding: 120px 0;
-    scroll-margin-top: 80px; /* Verhindert, dass der Header Inhalte verdeckt */
 }
 
 .hero{
@@ -322,36 +333,29 @@ footer{
 
 
 /* ==========================================================================
-   NEU: CARD-SCROLLING (SNAP-EFFECT) NUR FÜR PC / GROSSE BILDSCHIRME
+   CARD-SCROLLING MIT "PROXIMITY" (TRÄGER) FÜR PC
    ========================================================================== */
 @media (min-width: 901px) {
     html {
-        /* Macht das HTML-Dokument zum "Snap-Container" */
-        scroll-snap-type: y mandatory;
-        height: 100vh;
-        overflow-y: scroll;
+        /* PROXIMITY statt mandatory: Rastet nur ein, wenn man nahe genug scrollt.
+           Fühlt sich natürlicher und kontrollierbarer an. */
+        scroll-snap-type: y proximity;
     }
 
-    body {
-        height: 100vh;
-    }
-
-    /* Jede Sektion verhält sich nun wie eine vollflächige Karte */
-    .hero, .section, footer {
-        scroll-snap-align: start; /* Richtet den Anfang der Karte am oberen Bildschirmrand aus */
-        min-height: 100vh;        /* Jede Karte füllt genau den Bildschirm aus */
+    .hero, .section {
+        scroll-snap-align: start; 
+        min-height: 100vh;        
         display: flex;
         flex-direction: column;
-        justify-content: center;  /* Zentriert den Inhalt vertikal */
-        padding: 0;               /* Verhindert Layout-Verschiebungen */
+        justify-content: center;  
+        padding: 0;               
         box-sizing: border-box;
     }
 
-    /* Das Footer-Element soll nicht den ganzen Bildschirm füllen, sondern unten "andocken" */
     footer {
         min-height: auto;
         padding: 60px 0;
-        scroll-snap-align: end;   /* Richtet das Ende des Footers am unteren Bildschirmrand aus */
+        scroll-snap-align: end;  
     }
 }
 
@@ -526,10 +530,24 @@ Even the ones you'd rather not discuss.
 <footer id="about">© 2026 Procto Mail. No leaks. Ever.</footer>
 
 <script>
+// Captcha Logik
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('captcha') === 'success') {
     document.getElementById('successBanner').style.display = 'block';
 }
+
+// NEU: Scroll-Tracker für visuelles Feedback (Farbverschiebung)
+window.addEventListener('scroll', () => {
+    // Berechnet, wie weit prozentual nach unten gescrollt wurde (0.0 bis 1.0)
+    let scrollTop = window.scrollY || document.documentElement.scrollTop;
+    let scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    
+    if (scrollHeight > 0) {
+        let scrollPercent = scrollTop / scrollHeight;
+        // Aktualisiert die CSS-Variable in Echtzeit
+        document.documentElement.style.setProperty('--scroll-pos', scrollPercent);
+    }
+}, { passive: true }); // passive: true sorgt dafür, dass das Scrollen maximal flüssig bleibt
 </script>
 
 </body>
