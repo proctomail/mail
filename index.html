@@ -329,11 +329,16 @@ footer{
     }
 
     .nav {
-        display: grid;
-        grid-template-columns: 1fr auto; /* Logo links, Button rechts */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
         align-items: center;
         gap: 12px;
     }
+    
+    .logo { order: 1; }
+    .btn-signup-header { order: 2; }
+    .nav-links { order: 3; width: 100%; }
     
     .nav-links {
         grid-column: span 2; /* Rutscht automatisch in Zeile 2 */
