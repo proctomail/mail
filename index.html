@@ -129,11 +129,16 @@ header{
 }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
+/* BASIS-STYLING FÜR SEKTIONEN */
+.section, .hero {
+    padding: 120px 0;
+    scroll-margin-top: 80px; /* Verhindert, dass der Header Inhalte verdeckt */
+}
+
 .hero{
     min-height:80vh;
     display:flex;
     align-items:center;
-    padding: 40px 0;
 }
 
 .hero-grid{
@@ -255,12 +260,6 @@ header{
     margin-bottom: 0;
 }
 
-/* ABSTANDSCHUTZ FÜR ANKER-LINKS */
-.section{
-    padding:120px 0;
-    scroll-margin-top: 130px; /* Leicht erhöht, da die mobile Leiste 2 Zeilen hat */
-}
-
 .section-title{
     text-align:center;
     font-size:2.8rem;
@@ -319,8 +318,43 @@ footer{
     padding:50px 0;
     text-align:center;
     color:var(--muted);
-    scroll-margin-top: 130px;
 }
+
+
+/* ==========================================================================
+   NEU: CARD-SCROLLING (SNAP-EFFECT) NUR FÜR PC / GROSSE BILDSCHIRME
+   ========================================================================== */
+@media (min-width: 901px) {
+    html {
+        /* Macht das HTML-Dokument zum "Snap-Container" */
+        scroll-snap-type: y mandatory;
+        height: 100vh;
+        overflow-y: scroll;
+    }
+
+    body {
+        height: 100vh;
+    }
+
+    /* Jede Sektion verhält sich nun wie eine vollflächige Karte */
+    .hero, .section, footer {
+        scroll-snap-align: start; /* Richtet den Anfang der Karte am oberen Bildschirmrand aus */
+        min-height: 100vh;        /* Jede Karte füllt genau den Bildschirm aus */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;  /* Zentriert den Inhalt vertikal */
+        padding: 0;               /* Verhindert Layout-Verschiebungen */
+        box-sizing: border-box;
+    }
+
+    /* Das Footer-Element soll nicht den ganzen Bildschirm füllen, sondern unten "andocken" */
+    footer {
+        min-height: auto;
+        padding: 60px 0;
+        scroll-snap-align: end;   /* Richtet das Ende des Footers am unteren Bildschirmrand aus */
+    }
+}
+
 
 /* SMARTPHONE & TABLET LAYOUT MIT 2 ZEILEN */
 @media(max-width:900px){
@@ -341,14 +375,14 @@ footer{
     .nav-links { order: 3; width: 100%; }
     
     .nav-links {
-        grid-column: span 2; /* Rutscht automatisch in Zeile 2 */
+        grid-column: span 2;
         justify-content: center;
         gap: 20px;
         margin-top: 8px;
     }
 
     .btn-signup-header {
-        padding: 8px 16px; /* Kompakter für den mobilen Header */
+        padding: 8px 16px;
         font-size: 0.9rem;
     }
 
