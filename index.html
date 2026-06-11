@@ -20,6 +20,11 @@
     --ok:#16a34a;
 }
 
+/* FLÜSSIGES SCROLLEN AKTIVIEREN */
+html {
+    scroll-behavior: smooth;
+}
+
 *{
     margin:0;
     padding:0;
@@ -46,8 +51,8 @@ header{
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: rgba(7, 8, 16, 0.8); /* Dein --bg Farbton mit Transparenz */
-    backdrop-filter: blur(12px);    /* Schicker Milchglas-Effekt beim Scrollen */
+    background: rgba(7, 8, 16, 0.8);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
 }
 
@@ -128,7 +133,7 @@ header{
     min-height:80vh;
     display:flex;
     align-items:center;
-    padding: 40px 0; /* Verhindert, dass der Inhalt am Header klebt */
+    padding: 40px 0;
 }
 
 .hero-grid{
@@ -250,8 +255,10 @@ header{
     margin-bottom: 0;
 }
 
+/* ABSTANDSCHUTZ FÜR ANKER-LINKS */
 .section{
     padding:120px 0;
+    scroll-margin-top: 100px; /* Verhindert, dass die Sticky-Leiste die Überschrift verdeckt */
 }
 
 .section-title{
@@ -273,7 +280,7 @@ header{
     gap:24px;
 }
 
-.feature{
+.feature {
     background:var(--card);
     border:1px solid var(--border);
     border-radius:20px;
@@ -322,19 +329,19 @@ footer{
 
     .nav {
         display: grid;
-        grid-template-columns: 1fr auto; /* Logo links, Button rechts */
+        grid-template-columns: 1fr auto; 
         gap: 12px;
     }
     
     .nav-links {
-        grid-column: span 2; /* Links breiten sich über die ganze Zeile darunter aus */
+        grid-column: span 2; 
         justify-content: center;
         gap: 16px;
         margin-top: 4px;
     }
 
     .btn-signup-header {
-        padding: 10px 16px; /* Etwas kompakter auf Handys */
+        padding: 10px 16px; 
         font-size: 0.9rem;
     }
 
@@ -368,7 +375,7 @@ footer{
 <header>
 <div class="container nav">
 
-<div class="logo">
+<a href="#" class="logo" style="color: inherit; text-decoration: none;">
 <div class="logo-icon">
 <svg viewBox="0 0 100 100">
   <defs>
@@ -379,38 +386,20 @@ footer{
   </defs>
 
   <g fill="none" stroke="url(#g)" stroke-width="7" stroke-linecap="round">
-
-    <path d="M50 12
-      C70 12 88 28 88 50
-      C88 72 70 88 50 88
-      C30 88 12 72 12 50
-      C12 28 30 12 50 12" />
-
-    <path d="M62 18
-      C78 26 84 40 84 52
-      C84 70 70 82 52 84
-      C34 86 18 72 16 54
-      C14 36 26 20 44 18
-      C50 17 56 17 62 18" />
-
-    <path d="M55 30
-      C68 34 72 46 68 56
-      C64 68 50 72 42 66
-      C34 60 34 44 42 38
-      C46 34 50 32 55 30" />
-
+    <path d="M50 12 C70 12 88 28 88 50 C88 72 70 88 50 88 C30 88 12 72 12 50 C12 28 30 12 50 12" />
+    <path d="M62 18 C78 26 84 40 84 52 C84 70 70 82 52 84 C34 86 18 72 16 54 C14 36 26 20 44 18 C50 17 56 17 62 18" />
+    <path d="M55 30 C68 34 72 46 68 56 C64 68 50 72 42 66 C34 60 34 44 42 38 C46 34 50 32 55 30" />
     <circle cx="50" cy="50" r="6" fill="url(#g)" opacity="0.9"/>
-
   </g>
 </svg>
 </div>
 <span>Procto Mail</span>
-</div>
+</a>
 
 <div class="nav-links">
-<a href="#">Features</a>
-<a href="#">Pricing</a>
-<a href="#">Security</a>
+<a href="#features">Features</a>
+<a href="#pricing">Pricing</a>
+<a href="#security">Security</a>
 <a href="#">About</a>
 </div>
 
@@ -419,8 +408,7 @@ footer{
 </div>
 </header>
 
-<section class="hero">
-<div class="container">
+<section class="hero" id="security"> <div class="container">
 
 <div id="successBanner" class="success-banner">
     🤖 <strong>organic life form detected!</strong> Registration failed
@@ -470,7 +458,7 @@ Even the ones you'd rather not discuss.
 </div>
 </section>
 
-<section class="section">
+<section class="section" id="features">
 <div class="container">
 <h2 class="section-title">Built for Maximum Containment</h2>
 <p class="section-sub">Advanced privacy technology inspired by the most secure systems in nature.</p>
@@ -482,7 +470,7 @@ Even the ones you'd rather not discuss.
 </div>
 </section>
 
-<section class="section">
+<section class="section" id="pricing">
 <div class="container">
 <h2 class="section-title">Choose Your Plan</h2>
 <div class="pricing">
@@ -496,7 +484,6 @@ Even the ones you'd rather not discuss.
 <footer>© 2026 Procto Mail. No leaks. Ever.</footer>
 
 <script>
-// Prüfen, ob wir von der Roboterprüfung kommen
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('captcha') === 'success') {
     document.getElementById('successBanner').style.display = 'block';
